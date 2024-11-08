@@ -1,9 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @import "react-alice-carousel/lib/alice-carousel.css"; */
-
-/* @import "~react-image-gallery/styles/css/image-gallery.css"; */
 
 .each-slide-effect > div {
   display: flex;
