@@ -16,11 +16,21 @@ const Header = () => {
   }
 
   return (
-    <div className="w-full h-14 bg-slate-200">
-      <div className="w-5/6 h-14 m-auto flex justify-between content-center p-4">
-        <div>
-          <Link to={"/"}>LOGO</Link>
+    <div className="w-full h-20 bg-slate-200">
+      <div className="w-5/6 h-20 m-auto flex justify-between content-center items-center">
+        <div className="flex gap-4">
+          <Link to={"/"}>
+            <img
+              src="../../public/logo-cupang.png"
+              className="w-14 h-14 mr-3 hover:grayscale transition-all"
+            />
+          </Link>
+          <Link to={"/"}>
+            <span className="text-5xl font-bold text-sky-800">Cupang </span>
+            <span className="text-red-900">| Beta Fish Top Market</span>
+          </Link>
         </div>
+
         <ul className="flex gap-4">
           <li className="hover:text-red-500">
             <Link to={"/new-arrival"}>New Arrival</Link>
