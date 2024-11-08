@@ -19,11 +19,16 @@ const ProductCard = ({
   return (
     <>
       {datas.map((fish, i) => (
-        <div className={`${classValue} p-6`} key={i}>
-          <img
-            src={fish.productImage}
-            className="mb-7 w-full grayscale hover:grayscale-0 transition-all cursor-pointer rounded-lg"
-          />
+        <div
+          className={`${classValue} p-12 hover:shadow-2xl transition-all rounded-xl`}
+          key={i}
+        >
+          <Link to={"/product/12"}>
+            <img
+              src={fish.productImage}
+              className="mb-7 w-full grayscale hover:grayscale-0 transition-all cursor-pointer rounded-lg"
+            />
+          </Link>
           <div className="flex justify-between">
             <div>
               <h3 className="text-3xl font-bold text-sky-600 hover:text-red-400 transition">

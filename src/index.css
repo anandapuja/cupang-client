@@ -1,13 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* @import "react-alice-carousel/lib/alice-carousel.css"; */
+
+/* @import "~react-image-gallery/styles/css/image-gallery.css"; */
 
 .each-slide-effect > div {
   display: flex;
   align-items: center;
   justify-content: center;
   background-size: cover;
-  height: 500px;
+  height: 600px;
 }
 
 .each-slide-effect span {

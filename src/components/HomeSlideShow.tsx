@@ -3,9 +3,9 @@ import { Fade } from "react-slideshow-image";
 
 const HomeSlideShow = () => {
   const images = [
-    "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-    "https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80",
-    "https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
+    "https://asset.kompas.com/crops/AsdK08zsp-tddeq8aH8XWPN69uw=/0x77:1000x744/1200x800/data/photo/2020/11/20/5fb73bce7aed2.jpg",
+    "https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/87/2024/01/23/na-ki-493530717.jpg",
+    "https://i.ytimg.com/vi/33HiGSXqrBI/maxresdefault.jpg",
   ];
 
   return (
