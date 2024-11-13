@@ -1,15 +1,15 @@
 import HomeSlideShow from "../components/HomeSlideShow";
 import ProductCard from "../components/ProductCard";
-import { dummyData } from "../data/dummy";
+import { dummyData } from "../constants/dummy";
 
 const Home = () => {
   return (
     <div>
       <HomeSlideShow />
-      <div className="w-5/6 h-auto m-auto flex">
+      <div className="sm:w-full lg:w-5/6 h-auto m-auto flex">
         <div className="w-2/3 flex flex-col items-center">
-          <div className="h-28 content-center">
-            <h3 className="text-center text-cyan-700 text-4xl font-bold">
+          <div className="sm:h-20 content-center">
+            <h3 className="text-center text-cyan-700 sm:text-2xl font-bold">
               New Arrival
             </h3>
           </div>
@@ -27,8 +27,8 @@ const Home = () => {
         </div>
 
         <div className="w-1/3 border-l-zinc-100 border-l-2">
-          <div className="h-28 content-center">
-            <h3 className="text-center text-red-900 text-4xl font-bold">
+          <div className="sm:h-20 content-center">
+            <h3 className="text-center text-red-900 sm:text-2xl font-bold">
               Best Seller
             </h3>
           </div>

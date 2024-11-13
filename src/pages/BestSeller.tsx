@@ -1,9 +1,9 @@
 import ProductCard from "../components/ProductCard";
-import { dummyData } from "../data/dummy";
+import { dummyData } from "../constants/dummy";
 
 const BestSeller = () => {
   return (
-    <div className="w-5/6 h-auto m-auto">
+    <div className="sm:w-full lg:w-5/6 h-auto m-auto">
       <div className="h-28 content-center">
         <h3 className="text-center text-cyan-700 text-5xl font-bold">
           Best Seller

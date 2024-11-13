@@ -20,23 +20,27 @@ const ProductCard = ({
     <>
       {datas.map((fish, i) => (
         <div
-          className={`${classValue} p-12 hover:shadow-2xl transition-all rounded-xl`}
+          className={`${classValue} sm:p-4 hover:shadow-xl transition-all sm:rounded-xl`}
           key={i}
         >
           <Link to={"/product/12"}>
             <img
               src={fish.productImage}
-              className="mb-7 w-full grayscale hover:grayscale-0 transition-all cursor-pointer rounded-lg"
+              className="sm:mb-7 w-full grayscale hover:grayscale-0 transition-all cursor-pointer sm:rounded-l"
             />
           </Link>
           <div className="flex justify-between">
             <div>
-              <h3 className="text-3xl font-bold text-sky-600 hover:text-red-400 transition">
+              <h3 className="sm:text-xl font-bold text-sky-600 hover:text-red-400 transition">
                 <Link to={"/product/12"}>{fish.title}</Link>
               </h3>
               <p>{fish.price}</p>
               <span
-                className={fish.stock > 0 ? `text-cyan-600` : `text-rose-600`}
+                className={
+                  fish.stock > 0
+                    ? `text-cyan-600 sm:text-xs`
+                    : `text-rose-600 sm:text-xs`
+                }
               >
                 {fish.stock > 0 ? `Ready Stock` : `Out of Stock`}
               </span>
