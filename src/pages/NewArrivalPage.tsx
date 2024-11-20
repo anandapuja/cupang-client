@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import useSWR from "swr";
 import ProductCard from "../components/ProductCard";
-import { dummyData } from "../constants/dummy";
+import { PRODUCTS_API } from "../utils/Constants";
+import { fetcher } from "../utils/fetcher";
 
 const NewArrival = () => {
-  const [data, setData] = useState<typeof dummyData>([]);
+  const { data: newArrival = { data: [] } } = useSWR(
+    `${PRODUCTS_API}/new-arrival`,
+    fetcher
+  );
 
-  useEffect(() => {
-    setData(dummyData);
-  }, []);
   return (
     <div className="sm:w-full lg:w-5/6 h-auto m-auto">
       <div className="h-28 content-center">
@@ -16,7 +17,7 @@ const NewArrival = () => {
         </h3>
       </div>
       <div className="w-full flex flex-wrap">
-        <ProductCard datas={data} classValue={"w-1/3"} />
+        <ProductCard datas={newArrival.data} classValue={"w-1/3"} />
       </div>
     </div>
   );

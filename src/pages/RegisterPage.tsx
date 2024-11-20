@@ -1,6 +1,35 @@
-import { Link } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { CUSTOMER_API } from "../utils/Constants";
 
 const Register = () => {
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("customerId")) {
+      navigate("/");
+    }
+  }, []);
+
+  const registerHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const login = await fetch(`${CUSTOMER_API}/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      const response = await login.json();
+      console.log(response);
+    } catch (error) {}
+  };
   return (
     <div className="w-5/6 h-auto m-auto">
       <div className="h-28 content-center">
@@ -18,7 +47,7 @@ const Register = () => {
         </Link>
       </p>
 
-      <form className="max-w-sm mx-auto">
+      <form className="max-w-sm mx-auto" onSubmit={registerHandler}>
         <div className="mb-5">
           <label
             htmlFor="email"
@@ -32,6 +61,8 @@ const Register = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
             placeholder="name@youremail.com"
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -48,6 +79,8 @@ const Register = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
             placeholder="yourusername"
             required
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
           />
         </div>
 
@@ -63,6 +96,8 @@ const Register = () => {
             id="password"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
             required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 

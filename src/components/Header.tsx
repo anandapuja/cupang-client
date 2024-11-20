@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import RightNavigation from "./MobileNavigation";
+import Navigation from "./Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping, faHamburger } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faLightbulb } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   return (
@@ -23,12 +23,15 @@ const Header = () => {
         <div className="mr-6">
           <Link to={"/cart"}>
             <span>0</span>
-            <FontAwesomeIcon icon={faCartShopping} className="sm:mr-3" />
+            <FontAwesomeIcon
+              icon={faCartShopping}
+              className="sm:mr-3 hover:text-sky-800 transition-all"
+            />
           </Link>
-          <FontAwesomeIcon icon={faHamburger} />
+          <FontAwesomeIcon icon={faLightbulb} />
         </div>
       </div>
-      <RightNavigation />
+      <Navigation />
     </div>
   );
 };
