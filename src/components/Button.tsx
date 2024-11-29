@@ -1,22 +1,55 @@
-import { useNavigate } from "react-router-dom";
-import { CART_API, CHECK_OUT } from "../utils/Constants";
-import { checkOutCartFetcher } from "../utils/fetcher";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  ADD_TO_CART,
+  CART_API,
+  CART_ID,
+  CHECK_OUT,
+  CUSTOMER_ID,
+  STATE_TYPE_CHECKOUT,
+} from "../utils/Constants";
+import { checkOutCartFetcher, createCartFetcher } from "../utils/fetcher";
+import { useContext } from "react";
+import { AuthenticationContext } from "../state/context";
 
 const Button = ({
   buttonText,
   buttonAction,
+  quantity,
 }: {
   buttonText: string;
   buttonAction: string;
+  quantity?: number;
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { appState, handleSetAppState } = useContext(AuthenticationContext);
+
   const actionHandler = async () => {
     if (buttonAction === CHECK_OUT) {
-      const response = await checkOutCartFetcher(
-        `${CART_API}/check-out/${localStorage.getItem("cartId")}`
+      await checkOutCartFetcher(
+        `${CART_API}/check-out/${localStorage.getItem(CART_ID)}`
       );
-      localStorage.removeItem("cartId");
+      localStorage.removeItem(CART_ID);
+      handleSetAppState(STATE_TYPE_CHECKOUT, 0);
       navigate("/check-out", { state: { success: true } });
+    }
+
+    if (buttonAction === ADD_TO_CART) {
+      if (appState.authStatus) {
+        if (Number(quantity) >= 1) {
+          const slug = location.pathname.split("/")[2];
+          console.log(slug);
+          const data = {
+            slug: slug,
+            quantity: Number(quantity),
+            customerId: String(localStorage.getItem(CUSTOMER_ID)),
+          };
+          const cartResponse = await createCartFetcher(CART_API, data);
+          localStorage.setItem(CART_ID, cartResponse.data.id);
+        }
+      } else {
+        navigate("/login");
+      }
     }
   };
 

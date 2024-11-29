@@ -1,19 +1,34 @@
-import { FormEvent, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { CUSTOMER_API } from "../utils/Constants";
+import { FormEvent, useContext, useState } from "react";
+import { Link, redirect, useNavigate } from "react-router-dom";
+import {
+  ACCESS_TOKEN,
+  CUSTOMER_API,
+  CUSTOMER_ID,
+  STATE_TYPE_REGISTER,
+  STATUS_201,
+} from "../utils/Constants";
+import useAuth from "../utils/auth";
+import { AuthenticationContext } from "../state/context";
+import { AuthData } from "../utils/Type";
+
+export const loaderRegister = async () => {
+  if (localStorage.getItem(ACCESS_TOKEN)) {
+    const response = await useAuth();
+    if (response.status === 200) {
+      return redirect("/");
+    }
+  }
+  return null;
+};
 
 const Register = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const navigate = useNavigate();
+  const { handleSetAppState } = useContext(AuthenticationContext);
 
-  useEffect(() => {
-    if (localStorage.getItem("customerId")) {
-      navigate("/");
-    }
-  }, []);
+  const navigate = useNavigate();
 
   const registerHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,8 +41,28 @@ const Register = () => {
         body: JSON.stringify({ username, email, password }),
       });
 
-      const response = await login.json();
-      console.log(response);
+      const { data } = await login.json();
+
+      if (login.status === STATUS_201) {
+        localStorage.setItem(ACCESS_TOKEN, data.token);
+        localStorage.setItem(CUSTOMER_ID, data.customer.id);
+
+        const authData: AuthData = {
+          authStatus: true,
+          customer: {
+            username: data.customer.username,
+            email: data.customer.email,
+            id: data.customer.id,
+            cartItem: 0,
+          },
+        };
+
+        handleSetAppState(STATE_TYPE_REGISTER, authData);
+
+        navigate("/");
+      } else {
+        console.log(data);
+      }
     } catch (error) {}
   };
   return (

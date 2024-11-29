@@ -9,9 +9,10 @@ import { fetcher } from "../utils/fetcher";
 import { useLocation } from "react-router-dom";
 import { PRODUCTS_API } from "../utils/Constants";
 import { priceParser } from "../utils/priceParser";
+import { ADD_TO_CART } from "../utils/Constants";
 
 const DetailProduct = () => {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   const { pathname } = useLocation();
   const productName = pathname.split("/");
@@ -105,7 +106,7 @@ const DetailProduct = () => {
                   name="quantity"
                   className="border-2 w-20 p-2 text-center rounded-lg"
                   value={quantity}
-                  min={0}
+                  min={1}
                   onChange={(e) => setQuantity(Number(e.target.value))}
                 />
                 <FontAwesomeIcon
@@ -114,7 +115,11 @@ const DetailProduct = () => {
                   className="cursor-pointer"
                 />
               </div>
-              <Button buttonText={"Add To Cart"}></Button>
+              <Button
+                buttonText={"Add To Cart"}
+                buttonAction={ADD_TO_CART}
+                quantity={quantity}
+              ></Button>
             </>
           )}
         </div>

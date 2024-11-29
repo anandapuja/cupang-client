@@ -1,53 +1,76 @@
-import App from "./App";
+import App, { loaderApp } from "./App";
 import { createBrowserRouter } from "react-router-dom";
 
 import {
   Home,
-  About,
+  AboutPage,
   Contact,
   NewArrival,
-  BestSeller,
-  Cart,
+  BestSellerPage,
+  CartPage,
   DetailProduct,
   Login,
   Register,
   CheckOut,
   ErrorPage,
   Search,
+  UploadProductPage,
 } from "./pages/index";
+import { cartLoader } from "./pages/CartPage";
+import { loaderLogin } from "./pages/Login";
+import { loaderRegister } from "./pages/RegisterPage";
 
 export const routes = createBrowserRouter([
   {
     id: "root",
     path: "/",
-    element: <App />,
+    Component: App,
+    loader: loaderApp,
     children: [
-      { path: "/", element: <Home />, errorElement: <ErrorPage /> },
-      { path: "/about", element: <About />, errorElement: <ErrorPage /> },
-      { path: "/contact", element: <Contact />, errorElement: <ErrorPage /> },
+      { path: "/", Component: Home, errorElement: <ErrorPage /> },
+      { path: "/about", Component: AboutPage, errorElement: <ErrorPage /> },
+      { path: "/contact", Component: Contact, errorElement: <ErrorPage /> },
       {
         path: "/new-arrival",
-        element: <NewArrival />,
-        errorElement: <ErrorPage />,
+        Component: NewArrival,
       },
       {
         path: "/best-seller",
-        element: <BestSeller />,
-        errorElement: <ErrorPage />,
+        Component: BestSellerPage,
       },
-      { path: "/cart", element: <Cart />, errorElement: <ErrorPage /> },
+      {
+        path: "/cart",
+        element: <CartPage />,
+        loader: cartLoader,
+      },
+      {
+        path: "/product/upload",
+        Component: UploadProductPage,
+      },
       {
         path: "/product/:name",
-        element: <DetailProduct />,
+        Component: DetailProduct,
+      },
+      {
+        path: "/register",
+        Component: Register,
+        errorElement: <ErrorPage />,
+        loader: loaderRegister,
+      },
+      {
+        path: "/login",
+        Component: Login,
+        errorElement: <ErrorPage />,
+        loader: loaderLogin,
+      },
+      {
+        path: "/search",
+        Component: Search,
         errorElement: <ErrorPage />,
       },
-      { path: "/register", element: <Register />, errorElement: <ErrorPage /> },
-      { path: "/login", element: <Login />, errorElement: <ErrorPage /> },
-      { path: "/search", element: <Search />, errorElement: <ErrorPage /> },
       {
         path: "/check-out",
-        element: <CheckOut />,
-        errorElement: <ErrorPage />,
+        Component: CheckOut,
       },
     ],
   },

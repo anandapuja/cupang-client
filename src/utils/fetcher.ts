@@ -1,3 +1,5 @@
+import { ACCESS_TOKEN } from "./Constants";
+
 export const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export const createCartFetcher = (
@@ -6,10 +8,11 @@ export const createCartFetcher = (
 ) =>
   fetch(url, {
     method: "POST",
+    body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
     },
-    body: JSON.stringify(data),
   }).then((res) => res.json());
 
 export const checkOutCartFetcher = async (url: string) => {
@@ -17,8 +20,44 @@ export const checkOutCartFetcher = async (url: string) => {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
     },
   });
   const response = await checkOut.json();
   return response;
+};
+
+export const fetcherGetCart = async (url: string) => {
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
+export const fetcherGetAuth = async (url: string) => {
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+    },
+  });
+
+  const data = await response.json();
+  return data;
+};
+
+export const fetchDeleteCartItem = async (url: string, productId: string) => {
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
+    },
+    body: JSON.stringify({ productId }),
+  });
+
+  const data = await response.json();
+  return data;
 };

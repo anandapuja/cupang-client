@@ -1,12 +1,13 @@
-export { default as About } from "./AboutPage";
-export { default as BestSeller } from "./BestSellerPage";
+export { default as AboutPage } from "./AboutPage";
+export { default as BestSellerPage } from "./BestSellerPage";
 export { default as Contact } from "./ContactPage";
 export { default as Home } from "./Home";
 export { default as NewArrival } from "./NewArrivalPage";
-export { default as Cart } from "./CartPage";
+export { default as CartPage } from "./CartPage";
 export { default as DetailProduct } from "./DetailProduct";
 export { default as Login } from "./Login";
 export { default as Register } from "./RegisterPage";
 export { default as CheckOut } from "./CheckOutPage";
 export { default as ErrorPage } from "./ErrorPage";
 export { default as Search } from "./SearchPage";
+export { default as UploadProductPage } from "./UploadProductPage";

@@ -16,6 +16,14 @@ export type Fish = {
   image: string;
 };
 
+export type ProductUpload = {
+  name: string;
+  price: number;
+  stock: number;
+  image?: string;
+  description?: string;
+};
+
 export type NewArrival = [
   {
     id: string;
@@ -41,6 +49,7 @@ export type BestSeller = [
 
 export type CartCard = [
   {
+    id: string;
     name: string;
     price: number;
     quantity: number;
@@ -48,3 +57,13 @@ export type CartCard = [
     image?: string;
   }
 ];
+
+export type AuthData = {
+  authStatus: boolean;
+  customer: {
+    username: string;
+    email: string;
+    id: string;
+    cartItem?: number;
+  };
+};

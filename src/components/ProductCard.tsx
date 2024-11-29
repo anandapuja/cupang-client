@@ -1,10 +1,16 @@
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Fish, NewArrival } from "../utils/Type";
-import { priceParser } from "../utils/priceParser";
 import { createCartFetcher } from "../utils/fetcher";
-import { CART_API } from "../utils/Constants";
+import {
+  CART_API,
+  CART_ID,
+  CUSTOMER_ID,
+  STATE_TYPE_ADD_CART_ITEM,
+} from "../utils/Constants";
+import { useContext } from "react";
+import { AuthenticationContext } from "../state/context";
 
 const ProductCard = ({
   datas,
@@ -13,14 +19,29 @@ const ProductCard = ({
   datas: NewArrival;
   classValue: string;
 }) => {
+  const { appState, handleSetAppState } = useContext(AuthenticationContext);
+
+  const navigate = useNavigate();
+
   async function addToCartHandler(slug: string): Promise<void> {
-    const data = {
-      slug: slug,
-      quantity: 1,
-      customerId: localStorage.getItem("customerId") || "",
-    };
-    const cartResponse = await createCartFetcher(CART_API, data);
-    localStorage.setItem("cartId", cartResponse.data.id);
+    if (appState.authStatus) {
+      const data = {
+        slug: slug,
+        quantity: 1,
+        customerId: localStorage.getItem(CUSTOMER_ID) || "",
+      };
+
+      const authData = {
+        authStatus: false,
+        customer: undefined,
+      };
+
+      const cartResponse = await createCartFetcher(CART_API, data);
+      handleSetAppState(STATE_TYPE_ADD_CART_ITEM);
+      localStorage.setItem(CART_ID, cartResponse.data.id);
+    } else {
+      navigate("/login");
+    }
   }
 
   return (
@@ -41,7 +62,7 @@ const ProductCard = ({
               <h3 className="sm:text-xl font-bold text-sky-600 hover:text-red-400 transition">
                 <Link to={`/product/${fish.slug}`}>{fish.name}</Link>
               </h3>
-              <p>IDR {priceParser(fish.price)}</p>
+              <p>IDR {fish.price.toLocaleString("id-ID")}</p>
               <span
                 className={
                   fish.stock > 0
@@ -52,7 +73,6 @@ const ProductCard = ({
                 {fish.stock > 0 ? `Ready Stock` : `Out of Stock`}
               </span>
             </div>
-            {/* <div> */}
             {fish.stock > 0 && (
               <div
                 onClick={() => addToCartHandler(fish.slug)}
@@ -62,7 +82,6 @@ const ProductCard = ({
                 <FontAwesomeIcon icon={faCartShopping} />
               </div>
             )}
-            {/* </div> */}
           </div>
         </div>
       ))}

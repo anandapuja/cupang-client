@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import Navigation from "./Navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faLightbulb } from "@fortawesome/free-solid-svg-icons";
+import { useContext } from "react";
+import { AuthenticationContext } from "../state/context";
 
 const Header = () => {
+  const { appState } = useContext(AuthenticationContext);
+
   return (
     <div className="w-full bg-slate-200 ">
       <div className="h-20 m-auto flex justify-between content-center items-center">
@@ -22,13 +26,17 @@ const Header = () => {
 
         <div className="mr-6">
           <Link to={"/cart"}>
-            <span>0</span>
+            <span>{appState.customer?.cartItem}</span>
             <FontAwesomeIcon
               icon={faCartShopping}
               className="sm:mr-3 hover:text-sky-800 transition-all"
             />
           </Link>
           <FontAwesomeIcon icon={faLightbulb} />
+          <span>
+            {appState.customer?.username &&
+              `Hallo ${appState.customer?.username}`}
+          </span>
         </div>
       </div>
       <Navigation />

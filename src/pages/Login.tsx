@@ -1,18 +1,29 @@
-import { FormEvent, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { CUSTOMER_API, STATUS_200 } from "../utils/Constants";
+import { FormEvent, useContext, useState } from "react";
+import { Link, redirect, useNavigate } from "react-router-dom";
+import {
+  ACCESS_TOKEN,
+  CART_ID,
+  CUSTOMER_API,
+  CUSTOMER_ID,
+  STATE_TYPE_LOGIN,
+  STATUS_200,
+} from "../utils/Constants";
+import { AuthenticationContext } from "../state/context";
+import { AuthData } from "../utils/Type";
+
+export const loaderLogin = () => {
+  if (localStorage.getItem(ACCESS_TOKEN)) {
+    return redirect("/");
+  }
+  return null;
+};
 
 const Login = () => {
-  // const navigate = useNavigate();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem("customerId")) {
-      navigate("/");
-    }
-  }, []);
+  const { handleSetAppState } = useContext(AuthenticationContext);
 
   const loginHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,16 +36,35 @@ const Login = () => {
         body: JSON.stringify({ username, password }),
       });
 
-      const response = await login.json();
+      const { data } = await login.json();
 
       if (login.status === STATUS_200) {
-        localStorage.setItem("customerId", response.data.customer.id);
-        if (response.data.customer.cart.length >= 1) {
-          localStorage.setItem("cartId", response.data.customer.cart[0].id);
+        // Set Local Storage
+        localStorage.setItem(CUSTOMER_ID, data.customer.id);
+        localStorage.setItem(ACCESS_TOKEN, data.token);
+
+        const authData: AuthData = {
+          authStatus: true,
+          customer: {
+            username: data.customer.username,
+            email: data.customer.email,
+            id: data.customer.id,
+          },
+        };
+
+        // If Any CartItem Found, Set CartItem to Context
+        if (data.customer.cart.length >= 1) {
+          localStorage.setItem(CART_ID, data.customer.cart[0].id);
+          const totalCartItem = data.customer.cart[0].products.length;
+          authData.customer.cartItem = totalCartItem;
+        } else {
+          authData.customer.cartItem = 0;
         }
+
+        handleSetAppState(STATE_TYPE_LOGIN, authData);
         navigate("/");
       } else {
-        console.log(response);
+        console.log(data);
       }
     } catch (error) {}
   };
@@ -66,7 +96,7 @@ const Login = () => {
             type="text"
             id="username"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5"
-            placeholder="name@flowbite.com"
+            placeholder="yourname@youremail.com"
             required
             onChange={(e) => setUserName(e.target.value)}
             value={username}

@@ -1,13 +1,18 @@
 import useSWR from "swr";
 import ProductCard from "../components/ProductCard";
-import { PRODUCTS_API } from "../utils/Constants";
+import { GET_NEW_ARRIVAL_PRODUCTS } from "../utils/Constants";
 import { fetcher } from "../utils/fetcher";
 
 const NewArrival = () => {
-  const { data: newArrival = { data: [] } } = useSWR(
-    `${PRODUCTS_API}/new-arrival`,
-    fetcher
-  );
+  const { data, error, isLoading } = useSWR(GET_NEW_ARRIVAL_PRODUCTS, fetcher);
+
+  if (isLoading) {
+    return <>Is Loading ...</>;
+  }
+
+  if (error) {
+    return <>Error</>;
+  }
 
   return (
     <div className="sm:w-full lg:w-5/6 h-auto m-auto">
@@ -17,7 +22,7 @@ const NewArrival = () => {
         </h3>
       </div>
       <div className="w-full flex flex-wrap">
-        <ProductCard datas={newArrival.data} classValue={"w-1/3"} />
+        <ProductCard datas={data.data} classValue={"w-1/3"} />
       </div>
     </div>
   );

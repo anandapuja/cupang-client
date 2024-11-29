@@ -1,13 +1,18 @@
 import useSWR from "swr";
 import ProductCard from "../components/ProductCard";
-import { PRODUCTS_API } from "../utils/Constants";
+import { GET_BEST_SELLER_PRODUCTS } from "../utils/Constants";
 import { fetcher } from "../utils/fetcher";
 
-const BestSeller = () => {
-  const { data: bestSeller = { data: [] } } = useSWR(
-    `${PRODUCTS_API}/best-seller`,
-    fetcher
-  );
+const BestSellerPage = () => {
+  const { data, error, isLoading } = useSWR(GET_BEST_SELLER_PRODUCTS, fetcher);
+
+  if (error) {
+    return <>Error</>;
+  }
+
+  if (isLoading) {
+    return <>Is Loading ...</>;
+  }
 
   return (
     <div className="sm:w-full lg:w-5/6 h-auto m-auto">
@@ -17,10 +22,10 @@ const BestSeller = () => {
         </h3>
       </div>
       <div className="w-full flex flex-wrap">
-        <ProductCard datas={bestSeller.data} classValue={"w-1/3"} />
+        <ProductCard datas={data.data} classValue={"w-1/3"} />
       </div>
     </div>
   );
 };
 
-export default BestSeller;
+export default BestSellerPage;

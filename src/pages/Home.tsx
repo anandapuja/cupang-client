@@ -2,23 +2,31 @@ import useSWR from "swr";
 import Button from "../components/Button";
 import HomeSlideShow from "../components/HomeSlideShow";
 import ProductCard from "../components/ProductCard";
-import { LOAD_MORE, PRODUCTS_API } from "../utils/Constants";
+import {
+  GET_BEST_SELLER_PRODUCTS,
+  GET_NEW_ARRIVAL_PRODUCTS,
+  LOAD_MORE,
+} from "../utils/Constants";
 import { fetcher } from "../utils/fetcher";
 
 const Home = () => {
-  const { data: newArrival = { data: [] } } = useSWR(
-    `${PRODUCTS_API}/new-arrival`,
-    fetcher
-  );
+  const {
+    data: newArrival,
+    error: newArrivalError,
+    isLoading: newArrivalIsLoading,
+  } = useSWR(GET_NEW_ARRIVAL_PRODUCTS, fetcher);
 
-  const { data: bestSeller = { data: [] } } = useSWR(
-    `${PRODUCTS_API}/best-seller`,
-    fetcher
-  );
+  const {
+    data: bestSeller,
+    error: bestSellerError,
+    isLoading: bestSellerIsLoading,
+  } = useSWR(GET_BEST_SELLER_PRODUCTS, fetcher);
 
-  // if (error) return <>Error ...</>;
+  if (newArrivalError) return <>New Arrival Error</>;
+  if (newArrivalIsLoading) return <>New Arrival Is Loading ...</>;
 
-  // if (isLoading) return <>Error ...</>;
+  if (bestSellerError) return <>Best Seller Error</>;
+  if (bestSellerIsLoading) return <>Best Seller Is Loading ...</>;
 
   return (
     <div>
