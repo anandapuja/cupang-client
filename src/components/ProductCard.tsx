@@ -31,10 +31,10 @@ const ProductCard = ({
         customerId: localStorage.getItem(CUSTOMER_ID) || "",
       };
 
-      const authData = {
-        authStatus: false,
-        customer: undefined,
-      };
+      // const authData = {
+      //   authStatus: false,
+      //   customer: undefined,
+      // };
 
       const cartResponse = await createCartFetcher(CART_API, data);
       handleSetAppState(STATE_TYPE_ADD_CART_ITEM);
