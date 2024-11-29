@@ -14,7 +14,7 @@ const Header = () => {
         <div className="flex ml-6 items-center">
           <Link to={"/"}>
             <img
-              src="../../public/logo-cupang.png"
+              src="https://res.cloudinary.com/dl2ibyua4/image/upload/fl_preserve_transparency/v1732921515/logo-cupang_d4yhc2.jpg"
               className="w-14 h-14 sm:mr-2 hover:grayscale transition-all"
             />
           </Link>
