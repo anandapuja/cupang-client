@@ -20,7 +20,7 @@ const CartCard = ({ datas }: { datas: CartCard }) => {
       `${CART_API}/${localStorage.getItem(CART_ID)}`,
       id
     );
-    handleSetAppState(STATE_TYPE_DELETE_CART_ITEM);
+    handleSetAppState(STATE_TYPE_DELETE_CART_ITEM, {});
     mutate(CART_API);
   };
 

@@ -37,7 +37,7 @@ const ProductCard = ({
       // };
 
       const cartResponse = await createCartFetcher(CART_API, data);
-      handleSetAppState(STATE_TYPE_ADD_CART_ITEM);
+      handleSetAppState(STATE_TYPE_ADD_CART_ITEM, {});
       localStorage.setItem(CART_ID, cartResponse.data.id);
     } else {
       navigate("/login");

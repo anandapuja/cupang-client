@@ -14,6 +14,7 @@ import {
 } from "./utils/Constants";
 import useAuth from "./utils/auth";
 import ErrorElement from "./components/ErrorElement";
+import type { AppState, Customer, ErrorMessageType } from "./state/context";
 
 export const loaderApp = async () => {
   if (localStorage.getItem(ACCESS_TOKEN)) {
@@ -26,61 +27,17 @@ export const loaderApp = async () => {
   return null;
 };
 
-type DataAuthentication = {
-  authStatus: boolean;
-  customer:
-    | {
-        cartItem: number | undefined;
-        email: string | undefined;
-        id: string | undefined;
-        username: string | undefined;
-      }
-    | undefined;
-};
-
-type DataCustomer = {
-  cartItem: number | undefined;
-  email: string | undefined;
-  id: string | undefined;
-  username: string | undefined;
-};
-
-type errorMessage = null | string;
-
-type Customer = {
-  username: string;
-  id: string;
-  email: string;
-  cartItem: number;
-};
-
-type AuthData = {
-  appState: {
-    authStatus: boolean;
-    customer: Customer | undefined;
-  };
-  handleSetAppState: (stateType?: string, data?: {}) => void;
-};
-
-const authData: AuthData = {
-  appState: {
-    authStatus: false,
-    customer: undefined,
-  },
-  handleSetAppState: (): void => {},
-};
-
 function App() {
   const data: any = useLoaderData();
 
-  const [appState, setAppState] = useState<DataAuthentication>({
+  const [appState, setAppState] = useState<AppState>({
     authStatus: false,
     customer: undefined,
   });
 
-  const [errorMessage, setErrorMessage] = useState<errorMessage>(null);
+  const [errorMessage, setErrorMessage] = useState<ErrorMessageType>("");
 
-  const handleSetAppState = (stateType: string, data: any): void => {
+  const handleSetAppState = (stateType?: string, data?: any): void => {
     if (stateType === STATE_TYPE_LOGIN) {
       setAppState({
         ...appState,
@@ -119,7 +76,7 @@ function App() {
     }
 
     if (stateType === STATE_TYPE_ADD_CART_ITEM) {
-      const customer: DataCustomer = {
+      const customer: Customer = {
         cartItem: appState.customer?.cartItem ?? +1,
         email: appState.customer?.email,
         id: appState.customer?.id,
@@ -132,7 +89,7 @@ function App() {
     }
 
     if (stateType === STATE_TYPE_DELETE_CART_ITEM) {
-      const customer: DataCustomer = {
+      const customer: Customer = {
         cartItem: appState.customer?.cartItem ?? -1,
         email: appState.customer?.email,
         id: appState.customer?.id,

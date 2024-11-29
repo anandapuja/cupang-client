@@ -29,10 +29,10 @@ import { createContext } from "react";
 // };
 
 export type Customer = {
-  username: string;
-  id: string;
-  email: string;
-  cartItem: number;
+  username?: string;
+  id?: string;
+  email?: string;
+  cartItem?: number;
 };
 
 export type AppState = {
@@ -45,20 +45,29 @@ const appState: AppState = {
   customer: undefined,
 };
 
-export type HandleSetAppState = (stateType: string, data?: {}) => void;
-const handleSetAppState: HandleSetAppState = (): void => {};
+// export type HandleSetAppState = (stateType?: string, data?: {}) => void;
+const handleSetAppState = (stateType: string, data: {}): void => {
+  console.log(stateType, data);
+};
 
 export const AuthenticationContext = createContext({
   appState,
   handleSetAppState,
 });
 
-export type errorMessage = {
-  errorMessage: string | null;
-  handleSetErrorMessage: (message: string) => void;
+export type ErrorMessageType = string;
+const errorMessage: ErrorMessageType = "";
+
+// export type HandleSetErrorMessage = () => void;
+const handleSetErrorMessage = (message: string): void => {
+  console.log(message);
 };
-const errorMessage = {
-  errorMessage: null,
-  handleSetErrorMessage: (): void => {},
-};
-export const ErrorMessageContext = createContext(errorMessage);
+
+// const errorMessage = {
+//   errorMessage: null,
+//   handleSetErrorMessage: (): void => {},
+// };
+export const ErrorMessageContext = createContext({
+  errorMessage,
+  handleSetErrorMessage,
+});
