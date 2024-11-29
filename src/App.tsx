@@ -28,29 +28,34 @@ export const loaderApp = async () => {
 
 type DataAuthentication = {
   authStatus: boolean;
-  customer: {
-    cartItem: number;
-    email: string;
-    id: string;
-    username: string;
-  };
+  customer:
+    | {
+        cartItem: number | undefined;
+        email: string | undefined;
+        id: string | undefined;
+        username: string | undefined;
+      }
+    | undefined;
 };
 
 type DataCustomer = {
-  cartItem: number;
-  email: string;
-  id: string;
-  username: string;
+  cartItem: number | undefined;
+  email: string | undefined;
+  id: string | undefined;
+  username: string | undefined;
 };
+
+type errorMessage = undefined | string;
 
 function App() {
   const data: any = useLoaderData();
-  const [appState, setAppState] = useState({
+
+  const [appState, setAppState] = useState<DataAuthentication>({
     authStatus: false,
     customer: undefined,
   });
 
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState<errorMessage>(undefined);
 
   const handleSetAppState = (type: string, data: DataAuthentication) => {
     if (type === STATE_TYPE_LOGIN) {
@@ -82,7 +87,9 @@ function App() {
         ...appState,
         authStatus: data.authStatus,
         customer: {
-          ...appState.customer,
+          email: appState.customer?.email,
+          id: appState.customer?.id,
+          username: appState.customer?.username,
           cartItem: 0,
         },
       });
@@ -90,20 +97,20 @@ function App() {
 
     if (type === STATE_TYPE_ADD_CART_ITEM) {
       const customer: DataCustomer = {
-        cartItem: appState.customer?.cartItem + 1,
+        cartItem: appState.customer?.cartItem ?? +1,
         email: appState.customer?.email,
         id: appState.customer?.id,
         username: appState.customer?.username,
       };
       setAppState({
         ...appState,
-        customer,
+        customer: customer,
       });
     }
 
     if (type === STATE_TYPE_DELETE_CART_ITEM) {
       const customer: DataCustomer = {
-        cartItem: appState.customer?.cartItem - 1,
+        cartItem: appState.customer?.cartItem ?? -1,
         email: appState.customer?.email,
         id: appState.customer?.id,
         username: appState.customer?.username,

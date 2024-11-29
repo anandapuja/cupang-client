@@ -1,16 +1,16 @@
 import { createContext } from "react";
 
 export type Customer = {
-  username?: string;
-  id?: string;
-  email?: string;
-  cartItem?: number;
+  username: string;
+  id: string;
+  email: string;
+  cartItem: number;
 };
 
 export type AuthData = {
   appState: {
     authStatus: boolean;
-    customer?: Customer | undefined;
+    customer: Customer | undefined;
   };
   handleSetAppState: (stateType?: string, data?: {}) => void;
 };
@@ -28,7 +28,7 @@ type errorMessage = {
   handleSetErrorMessage: (message: string) => void;
 };
 const errorMessage = {
-  errorMessage: null,
+  errorMessage: undefined,
   handleSetErrorMessage: (message: string): void => {},
 };
 
