@@ -45,7 +45,30 @@ type DataCustomer = {
   username: string | undefined;
 };
 
-type errorMessage = undefined | string;
+type errorMessage = null | string;
+
+type Customer = {
+  username: string;
+  id: string;
+  email: string;
+  cartItem: number;
+};
+
+type AuthData = {
+  appState: {
+    authStatus: boolean;
+    customer: Customer | undefined;
+  };
+  handleSetAppState: (stateType?: string, data?: {}) => void;
+};
+
+const authData: AuthData = {
+  appState: {
+    authStatus: false,
+    customer: undefined,
+  },
+  handleSetAppState: (): void => {},
+};
 
 function App() {
   const data: any = useLoaderData();
@@ -55,10 +78,10 @@ function App() {
     customer: undefined,
   });
 
-  const [errorMessage, setErrorMessage] = useState<errorMessage>(undefined);
+  const [errorMessage, setErrorMessage] = useState<errorMessage>(null);
 
-  const handleSetAppState = (type: string, data: DataAuthentication) => {
-    if (type === STATE_TYPE_LOGIN) {
+  const handleSetAppState = (stateType: string, data: any): void => {
+    if (stateType === STATE_TYPE_LOGIN) {
       setAppState({
         ...appState,
         authStatus: data.authStatus,
@@ -66,7 +89,7 @@ function App() {
       });
     }
 
-    if (type === STATE_TYPE_LOGOUT) {
+    if (stateType === STATE_TYPE_LOGOUT) {
       setAppState({
         ...appState,
         authStatus: false,
@@ -74,7 +97,7 @@ function App() {
       });
     }
 
-    if (type === STATE_TYPE_REGISTER) {
+    if (stateType === STATE_TYPE_REGISTER) {
       setAppState({
         ...appState,
         authStatus: data.authStatus,
@@ -82,7 +105,7 @@ function App() {
       });
     }
 
-    if (type === STATE_TYPE_CHECKOUT) {
+    if (stateType === STATE_TYPE_CHECKOUT) {
       setAppState({
         ...appState,
         authStatus: data.authStatus,
@@ -95,7 +118,7 @@ function App() {
       });
     }
 
-    if (type === STATE_TYPE_ADD_CART_ITEM) {
+    if (stateType === STATE_TYPE_ADD_CART_ITEM) {
       const customer: DataCustomer = {
         cartItem: appState.customer?.cartItem ?? +1,
         email: appState.customer?.email,
@@ -108,7 +131,7 @@ function App() {
       });
     }
 
-    if (type === STATE_TYPE_DELETE_CART_ITEM) {
+    if (stateType === STATE_TYPE_DELETE_CART_ITEM) {
       const customer: DataCustomer = {
         cartItem: appState.customer?.cartItem ?? -1,
         email: appState.customer?.email,
