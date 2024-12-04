@@ -81,14 +81,18 @@ function App() {
 
     if (stateType === STATE_TYPE_ADD_CART_ITEM) {
       if (productId && appState.customer) {
-        const addCartItemDetail = [
-          ...appState.customer.cartItemDetail,
-          { productId },
-        ];
+        // const addCartItemDetail = [
+        //   ...appState.customer.cartItemDetail,
+        //   { productId },
+        // ];
+
+        // const addCartItemDetail : {}[] = appState.customer.cartItemDetail;
+        // addCartItemDetail?.push({ productId });
+
         const customer: Customer = {
           ...appState.customer,
           cartItem: appState.customer.cartItem + 1,
-          cartItemDetail: addCartItemDetail,
+          // cartItemDetail: addCartItemDetail,
         };
 
         mutate(CART_API);
