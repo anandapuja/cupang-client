@@ -15,12 +15,12 @@ const CartCard = ({ datas }: { datas: CartCard }) => {
   const { mutate } = useSWRConfig();
   const { handleSetAppState } = useContext(AuthenticationContext);
 
-  const handleDeleteCartItem = async (id: string) => {
+  const handleDeleteCartItem = async (productId: string) => {
     await fetchDeleteCartItem(
       `${CART_API}/${localStorage.getItem(CART_ID)}`,
-      id
+      productId
     );
-    handleSetAppState(STATE_TYPE_DELETE_CART_ITEM, {});
+    handleSetAppState(STATE_TYPE_DELETE_CART_ITEM, undefined, productId);
     mutate(CART_API);
   };
 

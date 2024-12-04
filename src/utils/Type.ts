@@ -64,6 +64,7 @@ export type AuthData = {
     username: string;
     email: string;
     id: string;
-    cartItem?: number;
+    cartItem: number;
+    cartItemDetail: [];
   };
 };

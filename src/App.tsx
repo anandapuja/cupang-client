@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { AuthenticationContext, ErrorMessageContext } from "./state/context";
 import {
   ACCESS_TOKEN,
+  CART_API,
   STATE_TYPE_ADD_CART_ITEM,
   STATE_TYPE_CHECKOUT,
   STATE_TYPE_DELETE_CART_ITEM,
@@ -14,7 +15,13 @@ import {
 } from "./utils/Constants";
 import useAuth from "./utils/auth";
 import ErrorElement from "./components/ErrorElement";
-import type { AppState, Customer, ErrorMessageType } from "./state/context";
+import type {
+  AppState,
+  Customer,
+  ErrorMessageType,
+  HandleSetAppState,
+} from "./state/context";
+import { mutate } from "swr";
 
 export const loaderApp = async () => {
   if (localStorage.getItem(ACCESS_TOKEN)) {
@@ -37,68 +44,84 @@ function App() {
 
   const [errorMessage, setErrorMessage] = useState<ErrorMessageType>("");
 
-  const handleSetAppState = (stateType?: string, data?: any): void => {
+  const handleSetAppState: HandleSetAppState = (
+    stateType: string,
+    data?: AppState,
+    productId?: string
+  ): void => {
     if (stateType === STATE_TYPE_LOGIN) {
-      setAppState({
-        ...appState,
-        authStatus: data.authStatus,
-        customer: data.customer,
-      });
+      if (data) {
+        setAppState(data);
+      }
     }
 
     if (stateType === STATE_TYPE_LOGOUT) {
       setAppState({
-        ...appState,
         authStatus: false,
         customer: undefined,
       });
     }
 
     if (stateType === STATE_TYPE_REGISTER) {
-      setAppState({
-        ...appState,
-        authStatus: data.authStatus,
-        customer: data.customer,
-      });
+      if (data) {
+        setAppState(data);
+      }
     }
 
     if (stateType === STATE_TYPE_CHECKOUT) {
       setAppState({
         ...appState,
-        authStatus: data.authStatus,
         customer: {
-          email: appState.customer?.email,
-          id: appState.customer?.id,
-          username: appState.customer?.username,
+          ...appState.customer,
           cartItem: 0,
+          cartItemDetail: [],
         },
       });
     }
 
     if (stateType === STATE_TYPE_ADD_CART_ITEM) {
-      const customer: Customer = {
-        cartItem: appState.customer?.cartItem ?? +1,
-        email: appState.customer?.email,
-        id: appState.customer?.id,
-        username: appState.customer?.username,
-      };
-      setAppState({
-        ...appState,
-        customer: customer,
-      });
+      if (productId && appState.customer) {
+        const addCartItemDetail = [
+          ...appState.customer.cartItemDetail,
+          { productId },
+        ];
+        const customer: Customer = {
+          ...appState.customer,
+          cartItem: appState.customer.cartItem + 1,
+          cartItemDetail: addCartItemDetail,
+        };
+
+        mutate(CART_API);
+
+        setAppState({
+          ...appState,
+          customer: customer,
+        });
+      }
     }
 
     if (stateType === STATE_TYPE_DELETE_CART_ITEM) {
-      const customer: Customer = {
-        cartItem: appState.customer?.cartItem ?? -1,
-        email: appState.customer?.email,
-        id: appState.customer?.id,
-        username: appState.customer?.username,
-      };
-      setAppState({
-        ...appState,
-        customer,
-      });
+      if (appState.customer) {
+        const removeCartItemDetail = appState.customer.cartItemDetail?.filter(
+          (cartItem) => {
+            return cartItem.productId !== productId;
+          }
+        );
+
+        console.log("new item", removeCartItemDetail);
+        console.log("productId", productId);
+
+        const customer: Customer = {
+          ...appState.customer,
+          cartItem: appState.customer?.cartItem - 1,
+          cartItemDetail: removeCartItemDetail,
+        };
+
+        setAppState({
+          ...appState,
+          customer,
+        });
+      }
     }
   };
 
@@ -108,10 +131,18 @@ function App() {
 
   useEffect(() => {
     if (data) {
+      const customer = {
+        username: data.username,
+        id: data.id,
+        email: data.email,
+        cartItem: data.cartItem?.length || 0,
+        cartItemDetail: data.cartItem,
+      };
+
       setAppState({
         ...appState,
         authStatus: !appState.authStatus,
-        customer: data,
+        customer: customer,
       });
     }
   }, []);

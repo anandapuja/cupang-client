@@ -31,22 +31,24 @@ const Cart = () => {
     return <>Is Loading ...</>;
   }
 
+  const cartLength = data?.data?.length >= 1 || false;
+
   return (
-    <div className="w-5/6 h-auto m-auto">
+    <div className="w-5/6 h-auto m-auto mt-32">
       <div className="h-28 content-center">
         <h3 className="text-center text-cyan-700 text-5xl font-bold">
-          {data.data.length >= 1 ? "Cart" : "Cart Empty"}
+          {cartLength ? "Cart" : "Cart Empty"}
         </h3>
       </div>
 
-      {data.data.length === 0 && (
+      {!cartLength && (
         <p className="text-center underline">
           <FontAwesomeIcon icon={faBackspace} className="mr-3" />
           <Link to="/new-arrival">Back to Shop</Link>
         </p>
       )}
 
-      {data.data.length >= 1 && (
+      {cartLength && (
         <>
           <div className="w-full border-t-2 border-gray-400 p-4">
             <CartCard datas={data.data} />
@@ -55,8 +57,7 @@ const Cart = () => {
             <h4 className="mt-7 text-2xl">
               Total :{" "}
               <span className="font-bold text-cyan-700">
-                {data.data.length >= 1 &&
-                  data?.totalPrice.toLocaleString("id-ID")}
+                {cartLength && data?.totalPrice.toLocaleString("id-ID")}
               </span>
             </h4>
 

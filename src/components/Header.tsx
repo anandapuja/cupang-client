@@ -9,8 +9,8 @@ const Header = () => {
   const { appState } = useContext(AuthenticationContext);
 
   return (
-    <div className="w-full bg-slate-200 ">
-      <div className="h-20 m-auto flex justify-between content-center items-center">
+    <div className="w-full bg-slate-200 fixed top-0 z-10">
+      <div className="h-24 m-auto flex justify-between content-center items-center">
         <div className="flex ml-6 items-center">
           <Link to={"/"}>
             <img

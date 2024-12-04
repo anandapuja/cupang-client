@@ -29,7 +29,7 @@ const Home = () => {
   if (bestSellerIsLoading) return <>Best Seller Is Loading ...</>;
 
   return (
-    <div>
+    <div className="mt-32">
       <HomeSlideShow />
       <div className="sm:w-full lg:w-5/6 h-auto m-auto flex">
         <div className="w-2/3 flex flex-col items-center">

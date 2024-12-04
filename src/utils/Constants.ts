@@ -1,13 +1,12 @@
-export const PRODUCTS_API = "https://cupang-server.onrender.com/api/products";
-export const CUSTOMER_API = "https://cupang-server.onrender.com/api/customers";
-export const CART_API = "https://cupang-server.onrender.com/api/cart";
+export const PRODUCTS_API = "http://localhost:3000/api/products";
+export const CUSTOMER_API = "http://localhost:3000/api/customers";
+export const CART_API = "http://localhost:3000/api/cart";
 export const GET_BEST_SELLER_PRODUCTS =
-  "https://cupang-server.onrender.com/api/products/best-seller";
+  "http://localhost:3000/api/products/best-seller";
 export const GET_NEW_ARRIVAL_PRODUCTS =
-  "https://cupang-server.onrender.com/api/products/new-arrival";
-export const GET_AUTHENTICATION = "https://cupang-server.onrender.com/api/auth";
-export const SEARCH_API =
-  "https://cupang-server.onrender.com/api/products/search";
+  "http://localhost:3000/api/products/new-arrival";
+export const GET_AUTHENTICATION = "http://localhost:3000/api/auth";
+export const SEARCH_API = "http://localhost:3000/api/products/search";
 
 export const CHECK_OUT = "CHECK_OUT";
 export const LOAD_MORE = "LOAD_MORE";

@@ -23,7 +23,20 @@ const ProductCard = ({
 
   const navigate = useNavigate();
 
-  async function addToCartHandler(slug: string): Promise<void> {
+  async function addToCartHandler(
+    slug: string,
+    productId: string
+  ): Promise<void> {
+    const isProductInCartItem = appState.customer?.cartItemDetail?.filter(
+      (cartItem: { productId: string }) => {
+        return cartItem.productId === productId;
+      }
+    );
+
+    if (isProductInCartItem?.length === 0) {
+      handleSetAppState(STATE_TYPE_ADD_CART_ITEM, undefined, productId);
+    }
+
     if (appState.authStatus) {
       const data = {
         slug: slug,
@@ -31,13 +44,7 @@ const ProductCard = ({
         customerId: localStorage.getItem(CUSTOMER_ID) || "",
       };
 
-      // const authData = {
-      //   authStatus: false,
-      //   customer: undefined,
-      // };
-
       const cartResponse = await createCartFetcher(CART_API, data);
-      handleSetAppState(STATE_TYPE_ADD_CART_ITEM, {});
       localStorage.setItem(CART_ID, cartResponse.data.id);
     } else {
       navigate("/login");
@@ -75,7 +82,7 @@ const ProductCard = ({
             </div>
             {fish.stock > 0 && (
               <div
-                onClick={() => addToCartHandler(fish.slug)}
+                onClick={() => addToCartHandler(fish.slug, fish.id)}
                 className="flex flex-col hover:text-cyan-800 cursor-pointer transition-all justify-center hover:bg-slate-200 p-2 rounded"
               >
                 <span className="text-xs mb-2">Add To Cart</span>

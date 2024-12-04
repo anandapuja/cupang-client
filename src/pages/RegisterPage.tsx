@@ -9,7 +9,6 @@ import {
 } from "../utils/Constants";
 import useAuth from "../utils/auth";
 import { AuthenticationContext } from "../state/context";
-import { AuthData } from "../utils/Type";
 
 export const loaderRegister = async () => {
   if (localStorage.getItem(ACCESS_TOKEN)) {
@@ -47,18 +46,18 @@ const Register = () => {
         localStorage.setItem(ACCESS_TOKEN, data.token);
         localStorage.setItem(CUSTOMER_ID, data.customer.id);
 
-        const authData: AuthData = {
+        const customerData = {
           authStatus: true,
           customer: {
             username: data.customer.username,
             email: data.customer.email,
             id: data.customer.id,
-            cartItem: 0,
+            cartItem: data.customer.cart?.length,
+            cartItemDetail: data.customer.cart,
           },
         };
 
-        handleSetAppState(STATE_TYPE_REGISTER, authData);
-
+        handleSetAppState(STATE_TYPE_REGISTER, customerData);
         navigate("/");
       } else {
         console.log(data);
@@ -66,7 +65,7 @@ const Register = () => {
     } catch (error) {}
   };
   return (
-    <div className="w-5/6 h-auto m-auto">
+    <div className="w-5/6 h-auto m-auto mt-32">
       <div className="h-28 content-center">
         <h3 className="text-center text-cyan-700 text-5xl font-bold">
           Register

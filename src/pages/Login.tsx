@@ -9,19 +9,23 @@ import {
   STATUS_200,
 } from "../utils/Constants";
 import { AuthenticationContext } from "../state/context";
-import { AuthData } from "../utils/Type";
+import useAuth from "../utils/auth";
 
-export const loaderLogin = () => {
+export const loaderLogin = async () => {
   if (localStorage.getItem(ACCESS_TOKEN)) {
-    return redirect("/");
+    const response = await useAuth();
+    if (response.status === 200) {
+      return redirect("/");
+    }
   }
   return null;
 };
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
   const { handleSetAppState } = useContext(AuthenticationContext);
 
@@ -39,38 +43,32 @@ const Login = () => {
       const { data } = await login.json();
 
       if (login.status === STATUS_200) {
-        // Set Local Storage
         localStorage.setItem(CUSTOMER_ID, data.customer.id);
         localStorage.setItem(ACCESS_TOKEN, data.token);
+        localStorage.setItem(CART_ID, data.customer.cartId);
 
-        const authData: AuthData = {
+        const customerData = {
           authStatus: true,
           customer: {
             username: data.customer.username,
             email: data.customer.email,
             id: data.customer.id,
+            cartItem: data.customer.cartItem?.length,
+            cartItemDetail: data.customer.cartItem,
           },
         };
-
-        // If Any CartItem Found, Set CartItem to Context
-        if (data.customer.cart.length >= 1) {
-          localStorage.setItem(CART_ID, data.customer.cart[0].id);
-          const totalCartItem = data.customer.cart[0].products.length;
-          authData.customer.cartItem = totalCartItem;
-        } else {
-          authData.customer.cartItem = 0;
-        }
-
-        handleSetAppState(STATE_TYPE_LOGIN, authData);
+        handleSetAppState(STATE_TYPE_LOGIN, customerData);
         navigate("/");
       } else {
         console.log(data);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div className="w-5/6 h-auto m-auto">
+    <div className="w-5/6 h-auto m-auto mt-32">
       <div className="h-28 content-center">
         <h3 className="text-center text-cyan-700 text-5xl font-bold">Login</h3>
       </div>

@@ -1,43 +1,29 @@
 import { createContext } from "react";
 
-// export type DataAuthentication = {
-//   authStatus: boolean;
-//   customer:
-//     | {
-//         cartItem: number | undefined;
-//         email: string | undefined;
-//         id: string | undefined;
-//         username: string | undefined;
-//       }
-//     | undefined;
-// };
-
-// export type AuthData = {
-//   appState: {
-//     authStatus: boolean;
-//     customer: Customer | undefined;
-//   };
-//   handleSetAppState: (stateType?: string, data?: {}) => void;
-// };
-
-// const authData: AuthData = {
-//   appState: {
-//     authStatus: false,
-//     customer: undefined,
-//   },
-//   handleSetAppState: (): void => {},
-// };
-
-export type Customer = {
-  username?: string;
-  id?: string;
-  email?: string;
-  cartItem?: number;
-};
+export type Customer =
+  | {
+      username?: string;
+      id?: string;
+      email?: string;
+      cartItem: number;
+      cartItemDetail?: { productId: string }[] | [];
+    }
+  | undefined;
 
 export type AppState = {
   authStatus: boolean;
-  customer: Customer | undefined;
+  customer: Customer;
+};
+
+export type HandleSetAppState = (
+  stateType: string,
+  data?: AppState,
+  productId?: string
+) => void;
+
+export type AuthenticationContext = {
+  appState: AppState;
+  handleSetAppState: HandleSetAppState;
 };
 
 const appState: AppState = {
@@ -45,12 +31,10 @@ const appState: AppState = {
   customer: undefined,
 };
 
-// export type HandleSetAppState = (stateType?: string, data?: {}) => void;
-const handleSetAppState = (stateType: string, data: {}): void => {
-  console.log(stateType, data);
-};
+const handleSetAppState: HandleSetAppState = () => {};
 
-export const AuthenticationContext = createContext({
+// CREATE CONTEXT
+export const AuthenticationContext = createContext<AuthenticationContext>({
   appState,
   handleSetAppState,
 });
@@ -58,15 +42,11 @@ export const AuthenticationContext = createContext({
 export type ErrorMessageType = string;
 const errorMessage: ErrorMessageType = "";
 
-// export type HandleSetErrorMessage = () => void;
 const handleSetErrorMessage = (message: string): void => {
   console.log(message);
 };
 
-// const errorMessage = {
-//   errorMessage: null,
-//   handleSetErrorMessage: (): void => {},
-// };
+// CREATE CONTEXT
 export const ErrorMessageContext = createContext({
   errorMessage,
   handleSetErrorMessage,

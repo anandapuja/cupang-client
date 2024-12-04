@@ -19,7 +19,7 @@ const Search = () => {
   }
 
   return (
-    <div className="w-5/6 h-auto m-auto">
+    <div className="w-5/6 h-auto m-auto mt-32">
       <div className="h-28 content-center text-center">
         <h3 className="text-center text-cyan-700 text-5xl font-bold">
           Search for :

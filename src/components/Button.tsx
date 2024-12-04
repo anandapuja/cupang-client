@@ -30,7 +30,7 @@ const Button = ({
         `${CART_API}/check-out/${localStorage.getItem(CART_ID)}`
       );
       localStorage.removeItem(CART_ID);
-      handleSetAppState(STATE_TYPE_CHECKOUT, 0);
+      handleSetAppState(STATE_TYPE_CHECKOUT);
       navigate("/check-out", { state: { success: true } });
     }
 
